@@ -1,0 +1,41 @@
+version: '3'
+services:
+  dbmysql:
+    image: mysql:8-oracle
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbtecnofit:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    restart: unless-stopped
+  
+  backend:
+    build: docker_images
+    image: tecnofit/laravel:9
+    ports:
+      - "80:80"
+    depends_on:
+      - dbmysql
+    volumes:
+      - ./backend:/var/www/html
+    networks:
+      default:
+        aliases:
+          - ${SERVERNAME_REST}
+    environment:
+      DB_CONNECTION: ${DB_CONNECTION}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      SERVER_NAME: ${SERVERNAME_REST}
+      DOCUMENT_ROOT: public
+    restart: unless-stopped
+
+volumes:
+  dbtecnofit:
