@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Services\{{modelName}}Service;
+use Illuminate\Http\Request;
+use App\Http\Resources\ResponseCollection;
+use App\Http\Resources\ResponseResource;
+use App\Http\Requests\{{modelName}}Request;
+
+class {{modelName}}Controller extends Controller
+{
+  public function __construct({{modelName}}Service $service)
+  {
+    $this->service = $service;
+  }
+  
+  public function index(Request $request)
+  {
+    return new ResponseCollection($this->service->index($request));
+  }
+
+  public function store({{modelName}}Request $request)
+  {
+    return (new ResponseResource($this->service->store($request)))
+      ->response()
+      ->setStatusCode(201);
+  }
+
+  public function update($id, {{modelName}}Request $request)
+  {
+    $this->service->update($id,$request);
+    return response()->noContent();
+  }
+
+  public function show($id) 
+  {
+    return ResponseResource::make($this->service->show($id));
+  }
+
+}
