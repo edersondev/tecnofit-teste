@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
-            MovementSeeder::class
+            MovementSeeder::class,
+            PersonalRecordSeeder::class
         ]);
     }
 }
