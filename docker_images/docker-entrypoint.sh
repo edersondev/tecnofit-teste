@@ -29,12 +29,13 @@ fi
 if [ ! -f "$PATH_ROOT/.env" ]; then
     if [ -f "$PATH_ROOT/.env.example" ]; then
         cp .env.example .env
+        php artisan key:generate
     fi
 fi
 
 if [ -f "$PATH_ROOT/.env" ]; then
-    php artisan key:generate
     php artisan migrate
+    php artisan db:seed
     chown www-data.www-data -R bootstrap/ storage/
     touch database/database.sqlite
 fi
