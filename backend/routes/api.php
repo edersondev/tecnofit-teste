@@ -21,3 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('ranking', [RankingController::class,'index']);
+Route::get('ranking/{id}',[RankingController::class,'show']);

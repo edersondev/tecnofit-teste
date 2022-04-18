@@ -35,6 +35,17 @@ class RankingService extends Service
     return $collection;
   }
 
+  public function show(int $id, array $relations = [])
+  {
+    $objModel = $this->repository->show($id,$this->repository->getRelations());
+    $objModel->personalRecord->map(function($record){
+      $record->ranking = $this->getRanking($record);
+      return $record;
+    });
+    
+    return $objModel;
+  }
+
   /**
    * @param int $recordValue
    * @return void
