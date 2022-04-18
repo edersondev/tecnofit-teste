@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Services\RankingService;
-use App\Http\Resources\RankingCollection;
+use App\Http\Resources\MovementCollection;
 
 class RankingController extends Controller
 {
@@ -23,7 +23,7 @@ class RankingController extends Controller
    */
   public function index(Request $request)
   {
-    return new RankingCollection($this->service->index($request));
+    return new MovementCollection($this->service->index($request));
   }
 
 }
