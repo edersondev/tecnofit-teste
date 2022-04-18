@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class RankingResource extends JsonResource
+class MovementResource extends JsonResource
 {
   /**
    * Transform the resource into an array.
@@ -15,11 +15,9 @@ class RankingResource extends JsonResource
   public function toArray($request)
   {
     return [
-			'id' => $this->user->id,
-			'name' => $this->user->name,
-			'ranking' => $this->ranking,
-			'value' => $this->value,
-			'date' => $this->date
+			'id' => $this->id,
+			'name' => $this->name,
+			'users' => new RankingCollection($this->personalRecord)
 		];
   }
 }

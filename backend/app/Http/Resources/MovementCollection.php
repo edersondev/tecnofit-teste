@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class RankingCollection extends ResourceCollection
+class MovementCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -14,6 +14,6 @@ class RankingCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return RankingResource::collection($this->collection);
+        return MovementResource::collection($this->collection);
     }
 }
