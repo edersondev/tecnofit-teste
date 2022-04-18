@@ -20,8 +20,8 @@ fi
 cd $PATH_ROOT
 
 if [ -f "$PATH_ROOT/composer.json" ]; then
-	composer update
 	if [ ! -d "$PATH_ROOT/vendor" ];then
+	    composer update
 		composer install
 	fi
 fi
