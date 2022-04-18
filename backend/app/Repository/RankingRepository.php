@@ -18,12 +18,16 @@ class RankingRepository extends Repository
    */
   public function index($request)
   {
-    $relations = [
+    return $this->entity::with($this->getRelations());
+  }
+
+  public function getRelations()
+  {
+    return [
       'personalRecord' => function(HasMany $query){
         $query->orderBy('value','desc');
       },
       'personalRecord.user'
     ];
-    return $this->entity::with($relations);
   }
 }
