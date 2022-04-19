@@ -17,7 +17,7 @@ class RankingService extends Service
 
   /**
    * @param \Illuminate\Http\Request $request
-   * @return Illuminate\Database\Eloquent\Collection
+   * @return \Illuminate\Database\Eloquent\Collection
    */
   public function index($request)
   {
