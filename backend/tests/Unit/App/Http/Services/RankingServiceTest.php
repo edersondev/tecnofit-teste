@@ -42,7 +42,7 @@ class RankingServiceTest extends TestCase
      */
     public function whenShowThenReturnModelWithRanking()
     {
-        $personalRecord = PersonalRecord::factory(3)->make();
+        $personalRecord = PersonalRecord::factory(random_int(2,5))->make();
         $movementModel = Movement::factory()->make();
         $movementModel->personalRecord = $personalRecord->sortByDesc('value');
         
@@ -60,7 +60,7 @@ class RankingServiceTest extends TestCase
         foreach($result->personalRecord as $record) {
             $this->assertTrue(array_key_exists('ranking',$record->getAttributes()));
         }
-        
+
         $this->assertEquals(1,$result->personalRecord->first()->ranking);
     }
 }
