@@ -7,7 +7,6 @@ use App\Repository\RankingRepository;
 use App\Models\Movement;
 use App\Models\PersonalRecord;
 use Tests\TestCase;
-use Mockery;
 
 class RankingServiceTest extends TestCase
 {
