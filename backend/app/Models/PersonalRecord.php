@@ -16,6 +16,13 @@ class PersonalRecord extends Model
      */
     protected $table = 'personal_record';
 
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
     public function movement()
     {
         return $this->belongsTo(Movement::class);

@@ -16,6 +16,13 @@ class Movement extends Model
      */
     protected $table = 'movement';
 
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
     public function personalRecord()
     {
         return $this->hasMany(PersonalRecord::class);

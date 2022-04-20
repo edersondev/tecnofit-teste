@@ -16,6 +16,13 @@ class User extends Model
      */
     protected $table = 'user';
 
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
     public function personalRecord()
     {
         return $this->hasMany(PersonalRecord::class);
