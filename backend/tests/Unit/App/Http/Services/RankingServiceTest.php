@@ -63,4 +63,40 @@ class RankingServiceTest extends TestCase
 
         $this->assertEquals(1,$result->personalRecord->first()->ranking);
     }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function whenIndexThenReturnCollectionWithRanking()
+    {
+        $stubClass = new class{
+            public function get(){
+                $collectionMovement = Movement::factory(random_int(2,6))->make();
+                $collectionMovement->map(function($movement){
+                    $personalRecord = PersonalRecord::factory(random_int(2,5))->make();
+                    $movement->personalRecord = $personalRecord->sortByDesc('value');
+                });
+                return $collectionMovement;
+            }
+        };
+
+
+        $repository = $this->createMock(RankingRepository::class);
+        $repository->method('index')->willReturn($stubClass);
+
+        $service = new RankingService($repository);
+
+        $result = $service->index($this->any());
+
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Collection::class, $result);
+        $this->assertContainsOnlyInstancesOf(Movement::class, $result);
+
+        foreach($result as $movement) {
+            foreach($movement->personalRecord as $record) {
+                $this->assertTrue(array_key_exists('ranking',$record->getAttributes()));
+            }
+            $this->assertEquals(1,$movement->personalRecord->first()->ranking);
+        }
+    }
 }
