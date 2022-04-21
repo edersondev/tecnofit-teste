@@ -23,7 +23,7 @@ O docker irá fazer o build da imagem que será usada para rodar a aplicação e
 
 Aguarde o composer baixar as dependências do projeto é possível acompanhar o projeto usando o seguinte comando docker:
 
-`docker logs -f NOME_CONTAINER`
+> `docker logs -f NOME_CONTAINER`
 
 Acesse o seguinte endereço:
 
@@ -34,3 +34,13 @@ Ou:
 http://localhost/api/ranking/1
 
 O parâmetro da URL acima é o ID do movement.
+
+### Instruções para rodar os testes
+
+Primeiro passo é criar a imagem que irá rodar a aplicação. Caso não tenha executado os comandos acima, dentro da pasta do repositório execute o seguinte comando:
+
+`docker build -t tecnofit/laravel:9 docker_images/`
+
+Depois da imagem criada, ainda dentro da pasta do repositório, execute o seguinte comando para executar os testes:
+
+`docker run -it -v $PWD/backend:/var/www/html --rm -e APP_ENV=testing tecnofit/laravel:9 php artisan test`
