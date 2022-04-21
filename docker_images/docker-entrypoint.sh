@@ -34,8 +34,10 @@ if [ ! -f "$PATH_ROOT/.env" ]; then
 fi
 
 if [ -f "$PATH_ROOT/.env" ]; then
-    php artisan migrate
-    php artisan db:seed
+    if ["$APP_ENV" != "testing"]; then
+        php artisan migrate
+        php artisan db:seed
+    fi
     chown www-data.www-data -R bootstrap/ storage/
 fi
 
