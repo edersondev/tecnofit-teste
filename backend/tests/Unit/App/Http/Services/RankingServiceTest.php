@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\App\Http\Services;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Http\Services\RankingService;
 use App\Repository\RankingRepository;
 use App\Models\Movement;
@@ -10,6 +11,8 @@ use Tests\TestCase;
 
 class RankingServiceTest extends TestCase
 {
+    use RefreshDatabase;
+    
     /**
      * @test
      * @return void
