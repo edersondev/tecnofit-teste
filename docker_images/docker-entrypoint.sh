@@ -3,6 +3,7 @@ set -e
 
 SITE_CONF=/etc/apache2/sites-available/000-default.conf
 PATH_ROOT=/var/www/html
+STR_TEST_ENV=testing
 
 if [ -n "$SERVER_NAME" ]; then
 	sed -i 's#$SERVER_NAME#'$SERVER_NAME'#g' $SITE_CONF
@@ -34,7 +35,7 @@ if [ ! -f "$PATH_ROOT/.env" ]; then
 fi
 
 if [ -f "$PATH_ROOT/.env" ]; then
-    if ["$APP_ENV" != "testing"]; then
+    if [ "$APP_ENV" != "$STR_TEST_ENV" ]; then
         php artisan migrate
         php artisan db:seed
     fi
