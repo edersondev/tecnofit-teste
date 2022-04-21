@@ -37,7 +37,6 @@ if [ -f "$PATH_ROOT/.env" ]; then
     php artisan migrate
     php artisan db:seed
     chown www-data.www-data -R bootstrap/ storage/
-    touch database/database.sqlite
 fi
 
 exec "$@"
