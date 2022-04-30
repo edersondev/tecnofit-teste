@@ -47,6 +47,13 @@ RUN mv composer.phar composer
 WORKDIR /root
 RUN echo 'export PATH="$PATH:$HOME/.composer/vendor/bin"' >> ~/.bashrc
 
+# Configuração Xdebug
+RUN { \
+    echo 'xdebug.client_host=host.docker.internal'; \
+    echo 'xdebug.idekey=VSCODE'; \
+    echo 'xdebug.mode=develop,debug,coverage'; \
+} >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
 # Clean
 RUN apt-get clean && apt-get autoclean && apt-get autoremove -y \
 && rm -rf /var/lib/apt/lists/*
