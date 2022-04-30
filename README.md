@@ -44,3 +44,11 @@ Primeiro passo é criar a imagem que irá rodar a aplicação. Caso não tenha e
 Depois da imagem criada, ainda dentro da pasta do repositório, execute o seguinte comando para executar os testes:
 
 `docker run -it -v $PWD/backend:/var/www/html --rm -e APP_ENV=testing tecnofit/laravel:9 php artisan test`
+
+Para executar os testes com coverage:
+
+`docker run -it -v $PWD/backend:/var/www/html --rm -e APP_ENV=testing tecnofit/laravel:9 php artisan test --coverage`
+
+Para gerar coverage em html:
+
+`docker run -it -v $PWD/backend:/var/www/html --rm -e APP_ENV=testing tecnofit/laravel:9 vendor/bin/phpunit --coverage-html reports/`
