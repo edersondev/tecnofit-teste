@@ -12,30 +12,49 @@ use Tests\TestCase;
 class RankingServiceTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected $_repository, $_service;
+
+    /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
+    public function setUp(): void
+    {
+        /** @var \App\Repository\RankingRepository&\PHPUnit\Framework\MockObject\MockObject $repository */
+        $this->_repository = $this->createMock(RankingRepository::class);
+
+        $this->_service = new RankingService($this->_repository);
+
+        parent::setUp();
+    }
     
     /**
      * @test
+     * @dataProvider sequencialRankingDataProvider
      * @return void
      */
-    public function whenSequencialRankingIsValid()
+    public function whenSequencialRankingIsValid($expected, $arrValue)
     {
-        $repository = $this->createMock(RankingRepository::class);
-        $service = new RankingService($repository);
-
-        $arrProvider = [
-            ['value' => 100,'expectedResult' => 1],
-            ['value' => 90,'expectedResult' => 2],
-            ['value' => 90,'expectedResult' => 2],
-            ['value' => 80,'expectedResult' => 3],
-            ['value' => 70,'expectedResult' => 4]
-        ];
-
-        foreach($arrProvider as $itemTest) {
-            $obj = new \stdClass();
-            $obj->value = $itemTest['value'];
-            $this->assertEquals($itemTest['expectedResult'],$service->getRanking($obj));
+        foreach($arrValue as $value) {
+            $this->_service->setRanking($value);
         }
+        $this->assertEquals($expected,$this->_service->getRanking());
+    }
 
+    /**
+     * @return array
+     */
+    public function sequencialRankingDataProvider(): array
+    {
+        return [
+            'ranking 1' => [1,[100]],
+            'ranking 2' => [2,[100,90]],
+            'ranking 2 same points previous ranking' => [2,[100,90,90]],
+            'ranking 3' => [3,[100,90,80]],
+            'ranking 4' => [4,[100,90,80,70]]
+        ];
     }
 
     /**
@@ -48,13 +67,10 @@ class RankingServiceTest extends TestCase
         $movementModel = Movement::factory()->make();
         $movementModel->personalRecord = $personalRecord->sortByDesc('value');
         
-        $repository = $this->createMock(RankingRepository::class);
-        $repository->method('getRelations')->willReturn([]);
-        $repository->method('show')->with(1)->willReturn($movementModel);
-        
-        $service = new RankingService($repository);
+        $this->_repository->method('getRelations')->willReturn([]);
+        $this->_repository->method('show')->with(1)->willReturn($movementModel);
 
-        $result = $service->show(1);
+        $result = $this->_service->show(1);
 
         $this->assertInstanceOf(Movement::class, $result);
         $this->assertContainsOnlyInstancesOf(PersonalRecord::class,$result->personalRecord);
@@ -83,13 +99,9 @@ class RankingServiceTest extends TestCase
             }
         };
 
+        $this->_repository->method('index')->willReturn($stubClass);
 
-        $repository = $this->createMock(RankingRepository::class);
-        $repository->method('index')->willReturn($stubClass);
-
-        $service = new RankingService($repository);
-
-        $result = $service->index($this->any());
+        $result = $this->_service->index($this->any());
 
         $this->assertInstanceOf(\Illuminate\Database\Eloquent\Collection::class, $result);
         $this->assertContainsOnlyInstancesOf(Movement::class, $result);
