@@ -25,7 +25,8 @@ class RankingService extends Service
 
     $collection->map(function($movement){
       $movement->personalRecord->map(function($record){
-        $record->ranking = $this->getRanking($record);
+        $this->setRanking($record->value);
+        $record->ranking = $this->getRanking();
         return $record;
       });
       $this->resetVariables();
@@ -39,7 +40,8 @@ class RankingService extends Service
   {
     $objModel = $this->repository->show($id,$this->repository->getRelations());
     $objModel->personalRecord->map(function($record){
-      $record->ranking = $this->getRanking($record);
+      $this->setRanking($record->value);
+      $record->ranking = $this->getRanking();
       return $record;
     });
     
@@ -58,15 +60,22 @@ class RankingService extends Service
   }
 
   /**
-   * @param App\Models\PersonalRecord $record
-   * @return int
+   * @param int $recordValue
+   * @return void
    */
-  public function getRanking($record)
+  public function setRanking($recordValue)
   {
-    if(!in_array($record->value,$this->_listRecord,true)){
+    if(!in_array($recordValue,$this->_listRecord,true)){
       $this->_rank++;
     }
-    $this->storeValueRecord($record->value);
+    $this->storeValueRecord($recordValue);
+  }
+
+  /**
+   * @return int
+   */
+  public function getRanking()
+  {
     return $this->_rank;
   }
 
