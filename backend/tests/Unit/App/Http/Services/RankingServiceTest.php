@@ -13,7 +13,15 @@ class RankingServiceTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected $_repository, $_service;
+    /**
+     * @var \App\Repository\RankingRepository&\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $_repository;
+
+    /**
+     * @var \App\Http\Services\RankingService
+     */
+    protected $_service;
 
     /**
      * Setup the test environment.
@@ -22,7 +30,6 @@ class RankingServiceTest extends TestCase
      */
     public function setUp(): void
     {
-        /** @var \App\Repository\RankingRepository&\PHPUnit\Framework\MockObject\MockObject $repository */
         $this->_repository = $this->createMock(RankingRepository::class);
 
         $this->_service = new RankingService($this->_repository);
